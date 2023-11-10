@@ -59,14 +59,18 @@ int main(int argc, char **argv) {
 
   printf("\n");
   for (int i = 0; i < args.n_cache_size * args.n_eviction_algo; i++) {
+    long cache_size = (long)result[i].cache_size / size_unit;
+    double gib_missed = (double)result[i].n_miss_byte / size_unit;
+    double cost = (gib_missed * 0.09) + (cache_size * 0.023);
+
     snprintf(output_str, 1024,
-             "%s %32s cache size %8ld%s, %lld req, miss ratio %.4lf, byte miss "
-             "ratio %.4lf\n",
-             output_filename, result[i].cache_name,
-             (long)result[i].cache_size / size_unit, size_unit_str,
-             (long long)result[i].n_req,
-             (double)result[i].n_miss / (double)result[i].n_req,
-             (double)result[i].n_miss_byte / (double)result[i].n_req_byte);
+             "%s, %ld, %lld, %.4lf, %.4lf, %.4lf\n",
+             result[i].cache_name,  // eviction policy
+             cache_size,  // cache size
+             (long long)result[i].n_req,  // no. of requests
+             (double)result[i].n_miss / (double)result[i].n_req,  // miss ratio
+             gib_missed,  // GiB missed
+             cost);  // Cost
     printf("%s", output_str);
     fprintf(output_file, "%s", output_str);
   }

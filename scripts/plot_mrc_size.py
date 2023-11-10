@@ -154,12 +154,20 @@ def plot_mrc_size(
         plt.xlabel("Cache Size")
     else:
         plt.xlabel("Cache Size ({})".format(size_unit_str))
-    plt.xscale("log")
+    # plt.ylabel("Bytes Missed")
     plt.ylabel("Miss Ratio")
+    plt.yscale("log")
+    step_size_x = 100
+    step_size_y = 0.01
+    # plt.xticks(np.arange(0, 4000 + step_size_x, step_size_x))
+    # plt.yticks(np.arange(0.56, 0.62 + step_size_y, step_size_y))
+    
     legend = plt.legend()
-    frame = legend.get_frame()
-    frame.set_facecolor("0.9")
-    frame.set_edgecolor("0.9")
+    # legend = plt.legend()
+    # frame = legend.get_frame()
+    # frame.set_facecolor("0.9")
+    # frame.set_edgecolor("0.9")
+    plt.legend(loc='upper right', bbox_to_anchor=(1.75, 1))
     plt.grid(linestyle="--")
     plt.savefig("{}.pdf".format(name), bbox_inches="tight")
     plt.show()
