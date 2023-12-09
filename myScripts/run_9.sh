@@ -1,0 +1,3 @@
+./bin/cachesim ../../../shared/IBMObjectStorageTrace/IBMObjectStoreTrace009Part0-sliced-compressed csv fifo,lru,clock,lfu,arc,twoq,hyperbolic,lhd 10gb,20gb,30gb,40gb,50gb,60gb,70gb,80gb,90gb,100gb,110gb,120gb,130gb,140gb,150gb,160gb,170gb,180gb,190gb,200gb -t "time-col=1,op-type-col=2,obj-id-col=3,obj-size-col=4,delimiter=,,obj-id-is-num=0" && \
+
+./bin/cachesim ../myScripts/IBMObjectStoreTrace009Part0-sliced-compressed_4 csv fifo,lru,clock,lfu,arc,twoq,hyperbolic,lhd 10gb,20gb,30gb,40gb,50gb,60gb,70gb,80gb,90gb,100gb,110gb,120gb,130gb,140gb,150gb,160gb,170gb,180gb,190gb,200gb -t "time-col=1,op-type-col=2,obj-id-col=3,obj-size-col=4,delimiter=,,obj-id-is-num=0"
