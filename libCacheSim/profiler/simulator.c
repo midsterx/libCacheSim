@@ -85,13 +85,27 @@ static void _simulate(gpointer data, gpointer user_data) {
   }
 
   while (req->valid) {
-    result[idx].n_req++;
-    result[idx].n_req_byte += req->obj_size;
-
     req->clock_time -= start_ts;
-    if (local_cache->get(local_cache, req) == false) {
-      result[idx].n_miss++;
-      result[idx].n_miss_byte += req->obj_size;
+
+    if (req->op == OP_DELETE) {
+      local_cache->remove(local_cache, req->obj_id);
+    } else if (req->op == OP_GET) {
+      result[idx].n_req++;
+      result[idx].n_req_byte += req->obj_size;
+
+      if (local_cache->get(local_cache, req) == false) {
+        result[idx].n_miss++;
+        result[idx].n_miss_byte += req->obj_size;
+      }
+    } else if (req->op == OP_SET) {
+      if (local_cache->find(local_cache, req, true)) {
+        local_cache->remove(local_cache, req->obj_id);
+        local_cache->get(local_cache, req);
+      } else {
+        local_cache->get(local_cache, req);
+      }
+    } else {
+      WARN("unsupported request type");
     }
     read_one_req(cloned_reader, req);
   }

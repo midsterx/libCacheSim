@@ -206,6 +206,16 @@ static inline void csv_cb1(void *s, size_t len, void *data) {
       // req->obj_id = (uint64_t)g_quark_from_string(s);
       req->obj_id = (uint64_t)get_hash_value_str((char *)s, len);
     }
+  } else if (csv_params->curr_field_idx == csv_params->op_field_idx) {
+    // Map from input format to req->op
+    uint8_t custom_req_op = (uint8_t)strtoul((char *)s, &end, 0);
+    if (custom_req_op == 0) {
+      req->op = OP_SET;
+    } else if (custom_req_op == 1) {
+      req->op = OP_GET;
+    } else if (custom_req_op == 2) {
+      req->op = OP_DELETE;
+    }
   } else if (csv_params->curr_field_idx == csv_params->time_field_idx) {
     // this does not work, because s is not null terminated
     uint64_t ts = (uint64_t)atof((char *)s);
@@ -252,6 +262,7 @@ void csv_setup_reader(reader_t *const reader) {
   csv_params->curr_field_idx = 1;
 
   csv_params->time_field_idx = init_params->time_field;
+  csv_params->op_field_idx = init_params->op_field;
   csv_params->obj_id_field_idx = init_params->obj_id_field;
   csv_params->obj_size_field_idx = init_params->obj_size_field;
   csv_params->cnt_field_idx = init_params->cnt_field;

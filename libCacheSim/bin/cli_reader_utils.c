@@ -114,6 +114,10 @@ void parse_reader_params(const char *reader_params_str,
       params->time_field = (int)strtol(value, &end, 0);
       if (strlen(end) > 2)
         ERROR("param parsing error, find string \"%s\" after number\n", end);
+    } else if (strcasecmp(key, "op-type-col") == 0) {
+      params->op_field = (int)strtol(value, &end, 0);
+      if (strlen(end) > 2)
+        ERROR("param parsing error, find string \"%s\" after number\n", end);
     } else if (strcasecmp(key, "obj-id-col") == 0 ||
                strcasecmp(key, "obj-id-field") == 0) {
       params->obj_id_field = (int)strtol(value, &end, 0);
