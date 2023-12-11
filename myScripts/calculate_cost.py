@@ -7,7 +7,7 @@ import pandas as pd
 # file2 should have greater number of bytes missed than file 1
 # For example, file 1 can be 4 day trace data and file 2 can be 7 day trace data
 if len(sys.argv) < 3:
-    print('Usage: python3 script.py <4_day_data> <7_day_data> [--filter]')
+    print('Usage: python3 calculate_cost.py <4_day_data> <7_day_data> [--filter_mac8]')
     sys.exit(1)
 
 # Get file paths from command line arguments
@@ -43,7 +43,7 @@ merged_df['cost'] = (merged_df['gib_missed'] * egress_costs) + (merged_df['cache
 result_df = merged_df[['cache_eviction_policy', 'cache_size', 'gib_missed', 'cost']]
 
 output_file = file2_path
-output_file += '_3_cost'
+output_file += '_last3_cc_cost'
 
 if (args.filter_mac8):
     output_file += '_mac8_filtered'

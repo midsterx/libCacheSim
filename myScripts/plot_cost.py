@@ -1,4 +1,5 @@
 import math
+import re
 import sys
 
 import pandas as pd
@@ -6,7 +7,7 @@ import matplotlib.pyplot as plt
 
 # Load CSV data
 if len(sys.argv) < 2:
-    print("Usage: python3 script.py <3_day_data>")
+    print("Usage: python3 plot_cost.py <3_day_data>")
     sys.exit(1)
 
 file_path = sys.argv[1]
@@ -38,8 +39,25 @@ plt.ylim(0, math.ceil(grouped['cost'].max().max() / 200) * 200)
 
 plt.xlabel('Cache Size (GiB)')
 plt.ylabel('Cost ($)')
-plt.title('Cost vs. Cache Size')
-plt.legend(loc='upper right', bbox_to_anchor=(1.6, 1))
+
+# Define a regular expression pattern to match the trace number and trace type
+pattern = r'Trace(\d+)Part\d+-sliced-compressed_last3_(\w+)_cost_mac8_filtered'
+
+# Use re.search to find the first match of the pattern in the input string
+match = re.search(pattern, file_path)
+
+trace_number = match.group(1)
+trace_type = match.group(2)
+print(f"Trace Number: {trace_number}")
+print(f"Trace Type: {trace_type}")
+if (trace_type == 'cc'):
+    plt.title('Cost vs. Cache Size for Trace ' + trace_number + ' Cross-Cloud')
+elif (trace_type == 'cr'):
+    plt.title('Cost vs. Cache Size for Trace ' + trace_number + ' Cross-Region')
+else:
+    raise Exception
+
+plt.legend(loc='upper right', bbox_to_anchor=(1.3, 1))
 plt.grid(True)
 
 plt.savefig(file_path + '.png', bbox_inches='tight')
