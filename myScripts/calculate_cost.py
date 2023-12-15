@@ -35,7 +35,7 @@ if (args.filter_mac8):
 merged_df['gib_missed'] = round(merged_df['gib_missed_y'] - merged_df['gib_missed_x'], 4)
 
 # Add the 'cost' column
-egress_costs = 0.09  # $/GB
+egress_costs = 0.09  # Cross-Cloud $/GB (use 0.02 for Cross-Region)
 storage_costs = 0.023  # $/GB month
 merged_df['cost'] = (merged_df['gib_missed'] * egress_costs) + (merged_df['cache_size'] * storage_costs)
 
